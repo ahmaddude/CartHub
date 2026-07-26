@@ -99,7 +99,7 @@ updatedProfile: async(data) => {
             throw new Error("At least one field (profilePic or bio) is required");
         }
 
-        const res = await axios.put(`${API_URL}/updated-profile`, data);
+        const res = await axios.put(`${API_URL}/update-profile`, data);
         
         // Update the user state with the returned user data
         set({ user: res.data });

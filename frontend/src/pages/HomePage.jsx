@@ -15,7 +15,7 @@ const navigate = useNavigate();
   useEffect(() => {
     fetchProducts();
     
-  }, [fetchProducts,searchProducts]);
+  }, [fetchProducts]);
 if(!allProducts||allProducts.length===0)return <Loader className="animate-spin" />
 
  
@@ -39,7 +39,7 @@ if(!allProducts||allProducts.length===0)return <Loader className="animate-spin" 
     <h2 className="text-6xl font-bold mb-2">Best Seller</h2>
     <h3 className="text-3xl font-semibold mb-2">{allProducts[allProducts.length-1]?.name}</h3>
     <p className="mb-4">{allProducts[allProducts.length-1]?.description}</p>
-    <p className="text-xl font-bold mb-4">${allProducts[allProducts.length-1]?.price}</p>
+    <p className="text-xl font-bold mb-4">${Number(allProducts[allProducts.length-1]?.price).toFixed(2)}</p>
     <button onClick={() => navigate(`/product/${allProducts[allProducts.length-1]?._id}`)}
  className="bg-white text-gray-900 font-bold px-6 py-2 rounded-lg hover:bg-gray-100 transition">
       Check it out

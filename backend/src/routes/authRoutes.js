@@ -25,7 +25,7 @@ router.post("/reset-password/:token",resetPassword);
 
 router.get("/check-auth",verifyToken,checkAuth);
 
-router.put("/updated-profile",verifyToken,updateProfile);
+router.put("/update-profile",verifyToken,updateProfile);
 
 router.post("/become-seller",verifyToken,becomeASeller);
 

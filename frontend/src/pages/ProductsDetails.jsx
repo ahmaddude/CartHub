@@ -23,11 +23,12 @@ export default function ProductDetails() {
     return <Loader className="size-10 animate-spin" />;
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     try {
       if(user && user.isVerified) {
-        addToCart(product._id, quantity);
-      toast.success("Product added to cart");}
+        await addToCart(product._id, quantity);
+        toast.success("Product added to cart");
+      }
       else{
         toast.error("Please login before adding products to cart");
       }
@@ -52,7 +53,7 @@ export default function ProductDetails() {
       <div className="flex flex-col justify-between">
         <div>
           <h1 className="text-4xl text-white font-bold mb-4">{product.name}</h1>
-          <p className="text-yellow-600 text-2xl font-semibold mb-6">${product.price}</p>
+          <p className="text-yellow-600 text-2xl font-semibold mb-6">${Number(product.price).toFixed(2)}</p>
           <p className="text-gray-300 mb-8">{product.description}</p>
         </div>
 
@@ -84,7 +85,7 @@ export default function ProductDetails() {
 
         {/* Seller-only delete button */}
         {user ? (
-          user.role === "seller" && product.sellerID == user._id && (
+          user.role === "seller" && product.sellerID === user._id && (
             <button
               onClick={async () => {
                 await deleteProduct(product._id);

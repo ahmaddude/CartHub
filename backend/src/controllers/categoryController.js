@@ -1,8 +1,12 @@
 import {Category} from '../models/categoryModel.js';
 import mongoose from 'mongoose';
 export const getAllCategories=async(req,res)=>{
-    const categories=await Category.find();
-    res.status(201).json(categories)
+    try {
+        const categories=await Category.find();
+        res.status(200).json(categories)
+    } catch (error) {
+        res.status(500).json({success:false,message:error.message})
+    }
 };
 
 export const createCategory=async(req,res)=>{
@@ -74,7 +78,7 @@ export const updateCategory=async(req,res)=>{
 export const deleteCategory=async(req,res)=>{
     const {id}=req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(404).json({ success: false, message: "Invalid Product Id" });
+            return res.status(404).json({ success: false, message: "Invalid Category Id" });
         }
         try {
             await Category.findByIdAndDelete(id);

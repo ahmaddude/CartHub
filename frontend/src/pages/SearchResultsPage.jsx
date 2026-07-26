@@ -1,15 +1,19 @@
 import { useProductsStore } from '../store/productsStore';
 import FlipCard from '../components/productCard'; 
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 
     const SearchResultsPage = () => {
         const { searchProducts,searchResults } = useProductsStore();
+        const [searchParams] = useSearchParams();
+        const query = searchParams.get('q') || '';
 
         useEffect(() => {
-            searchProducts()
-        },[searchProducts,searchResults]
-        )
+            if(query) {
+                searchProducts(query);
+            }
+        },[query, searchProducts])
 
 
             return (

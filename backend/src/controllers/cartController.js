@@ -25,7 +25,7 @@ export const addToCart=async(req,res)=>{
         if(!product){
             return res.status(404).json({success:false,message:"Product not found"});
         };
-        const cart=await Cart.findOne({user:userId});
+        let cart=await Cart.findOne({user:userId});
         if(!cart){
             cart=await Cart.create({user:userId,items:[{product:productId,quantity:parsedQ}]}); }
             else{
@@ -49,7 +49,7 @@ export const updateCart=async(req,res)=>{
     const userId=req.userId;
     const {productID}=req.params;
     const {quantity}=req.body;
-    if(quantity<=0){
+    if(!quantity || quantity<=0){
         return res.status(400).json({success:false,message:"Quantity must be greater than 0"});
     };
     try {

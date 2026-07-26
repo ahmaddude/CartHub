@@ -3,7 +3,6 @@ import { useCartStore } from "../store/cartStore";
 import { useOrderStore } from "../store/orderStore";
 
 export default function Success() {
-  const { setCartProducts } = useCartStore();
   const { createOrder } = useOrderStore();
   const [isProcessing, setIsProcessing] = useState(true);
   const [orderComplete, setOrderComplete] = useState(false);
@@ -12,7 +11,6 @@ export default function Success() {
     const finalizeOrder = async () => {
       try {
         await createOrder();
-        setCartProducts([]);
         setOrderComplete(true);
       } catch (error) {
         console.error("Error finalizing order:", error);
@@ -22,7 +20,7 @@ export default function Success() {
     };
 
     finalizeOrder();
-  }, [createOrder, setCartProducts]);
+  }, [createOrder]);
 
   if (isProcessing) {
     return (

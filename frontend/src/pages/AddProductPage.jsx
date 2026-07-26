@@ -20,7 +20,7 @@ const AddProductPage = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

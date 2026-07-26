@@ -9,7 +9,7 @@ export const signup=async(req,res)=>{
     const {email,password,name}=req.body;
     try {
         if(!email||!password||!name){
-            throw new Error ("all fieldsare required");
+            throw new Error ("all fields are required");
         }
         const userAlreadyExists=await User.findOne({email});
                 if(userAlreadyExists){
@@ -29,9 +29,9 @@ export const signup=async(req,res)=>{
 
          await sendMail({
       to: email,
-      subject: "Verify your Store account",
+      subject: "Verify your PINTRIP account",
       text: `Your verification code is ${verificationToken}`,
-      html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 15 minutes.</p>`,
+      html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
     });
         //JWT
         generateTokenAndSetCookie(res,user._id);
@@ -130,7 +130,12 @@ export const forgotPassword=async(req,res)=>{
         user.resetPasswordExpiresAt=resetTokenExpiresAt;
         await user.save();
 
-        await sendPasswordResetEmail(user.email,`${process.env.CLIENT_URL}/reset-password/${resetToken}`);
+        await sendMail({
+            to: user.email,
+            subject: "Reset your password",
+            text: `Click this link to reset your password: ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
+            html: `<p>Click this link to reset your password: <a href="${process.env.CLIENT_URL}/reset-password/${resetToken}">${process.env.CLIENT_URL}/reset-password/${resetToken}</a></p>`,
+        });
 
         res.status(200).json({success:true, message:"Password reset email sent"});
     } catch (error) {
@@ -161,7 +166,12 @@ export const resetPassword=async(req,res)=>{
         user.resetPasswordExpiresAt=undefined;
         await user.save();
         
-        await sendResetSuccessEmail(user.email);
+        await sendMail({
+            to: user.email,
+            subject: "Password reset successful",
+            text: `Your password has been reset successfully.`,
+            html: `<p>Your password has been reset successfully.</p>`,
+        });
         
         res.status(200).json({success:true, message:"Password reset successfully"});
     } catch (error) {
@@ -187,12 +197,6 @@ export const checkAuth=async(req,res)=>{
 };
 
 export const updateProfile = async(req, res) => {
-    cloudinary.config({ 
-        cloud_name: process.env.cloud_name,
-        api_key: process.env.api_key, 
-        api_secret: process.env.api_secret 
-    });
-    
     try {
         const { profilePic, bio } = req.body;
         const userId = req.userId;

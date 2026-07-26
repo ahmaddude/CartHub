@@ -35,12 +35,12 @@ const ProfilePage = () => {
   };
 
   return (
-      <div className="pb-50 md:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 ">
+      <div className="pb-20 md:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 ">
         {/* Avatar Section */}
         <div className="flex flex-col items-center space-y-6">
           <div className="relative w-40 h-40">
             <img
-              src={selectedImg || user.profilePic || "/avatar.png"}
+              src={selectedImg || user?.profilePic || "/avatar.png"}
               alt="Profile"
               className="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-lg"
             />
@@ -73,7 +73,7 @@ const ProfilePage = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-gray-400">Account Status</span>
-                <p className="text-blue-400 font-semibold">{user.role}</p>
+                <p className="text-blue-400 font-semibold">{user?.role}</p>
               </div>
             </div>
 

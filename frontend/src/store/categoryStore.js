@@ -5,8 +5,12 @@ const API_URL = import.meta.env.MODE==="development"?'http://localhost:5000/api/
 export const useCategoryStore = create((set) => ({
   categories: [],
   fetchCategories: async () => {
-    const res = await axios.get(`${API_URL}/categories`);
-    set({ categories: res.data });
+    try {
+      const res = await axios.get(`${API_URL}/categories`);
+      set({ categories: res.data });
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   },
 
   createCategory:async(name,description)=>{

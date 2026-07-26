@@ -160,7 +160,7 @@ const CategoriesPage = () => {
                       className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain mb-4"
                     />
                     <h2 className="text-lg sm:text-xl font-bold text-gray-900 text-center">{product.name}</h2>
-                    <p className="text-gray-600 text-lg font-semibold">${product.price}</p>
+                    <p className="text-gray-600 text-lg font-semibold">${Number(product.price).toFixed(2)}</p>
                   </div>
                 }
                 backContent={

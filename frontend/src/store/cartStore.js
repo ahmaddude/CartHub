@@ -27,7 +27,7 @@ export const useCartStore = create((set, get) => ({
   getCartProducts: async () => {
     try {
       const res = await axios.get(`${API_URL}/view-cart`, { withCredentials: true });
-      set({ cartProducts: res.data.cart.items });
+      set({ cartProducts: res.data.cart?.items || [] });
     } catch (err) {
       console.error(err);
     }

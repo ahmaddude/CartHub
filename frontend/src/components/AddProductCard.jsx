@@ -20,7 +20,7 @@ const AddProductCard = () => {
     
     fetchCategories();
     
-  }, [fetchCategories,categories]);
+  }, [fetchCategories]);
 if(!categories||categories.length===0)return <Loader className="animate-spin" />
 
 
@@ -63,7 +63,7 @@ try {
  <div> <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <img
-              src={ selectedImg}
+              src={ selectedImg || "/placeholder.png"}
               alt="Add Product image here"
               className="size-32  object-cover border-2 "
             />

@@ -25,9 +25,13 @@ export const useProductsStore = create((set) => ({
   },
 
   getCP:async(categoryID)=>{
-    const res = await axios.get(`${API_URL}/products`);
-const cres= res.data.products.filter(product=>product.categoryID._id===categoryID)
-set({categoryProducts:cres})
+    try {
+      const res = await axios.get(`${API_URL}/products`);
+      const cres= res.data.products.filter(product=>product.categoryID._id===categoryID)
+      set({categoryProducts:cres})
+    } catch (error) {
+      console.error("Error fetching category products:", error);
+    }
   },
 
   searchProducts: async (searchTerm) => {
