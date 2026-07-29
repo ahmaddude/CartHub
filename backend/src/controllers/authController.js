@@ -38,12 +38,13 @@ export const signup=async(req,res)=>{
             },
         });
 
+        console.log("signup: About to call sendMail for", email);
         sendMail({
       to: email,
       subject: "Verify your PINTRIP account",
       text: `Your verification code is ${verificationToken}`,
       html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
-    });
+    }).catch(err => console.error("signup: sendMail failed:", err));
 
     } catch (error) {
         res.status(400).json({success:false, message: error.message});
