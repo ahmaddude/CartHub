@@ -27,13 +27,6 @@ export const signup=async(req,res)=>{
         })
         await user.save();
 
-         await sendMail({
-      to: email,
-      subject: "Verify your PINTRIP account",
-      text: `Your verification code is ${verificationToken}`,
-      html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
-    });
-        //JWT
         generateTokenAndSetCookie(res,user._id);
 
         res.status(201).json({
@@ -44,6 +37,13 @@ export const signup=async(req,res)=>{
                 password:undefined
             },
         });
+
+        sendMail({
+      to: email,
+      subject: "Verify your PINTRIP account",
+      text: `Your verification code is ${verificationToken}`,
+      html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
+    });
 
     } catch (error) {
         res.status(400).json({success:false, message: error.message});
@@ -130,14 +130,14 @@ export const forgotPassword=async(req,res)=>{
         user.resetPasswordExpiresAt=resetTokenExpiresAt;
         await user.save();
 
-        await sendMail({
+        res.status(200).json({success:true, message:"Password reset email sent"});
+
+        sendMail({
             to: user.email,
             subject: "Reset your password",
             text: `Click this link to reset your password: ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
             html: `<p>Click this link to reset your password: <a href="${process.env.CLIENT_URL}/reset-password/${resetToken}">${process.env.CLIENT_URL}/reset-password/${resetToken}</a></p>`,
         });
-
-        res.status(200).json({success:true, message:"Password reset email sent"});
     } catch (error) {
         console.log("error in forgot password",error);
         res.status(500).json({success:false, message:error.message});
@@ -166,14 +166,14 @@ export const resetPassword=async(req,res)=>{
         user.resetPasswordExpiresAt=undefined;
         await user.save();
         
-        await sendMail({
+        res.status(200).json({success:true, message:"Password reset successfully"});
+        
+        sendMail({
             to: user.email,
             subject: "Password reset successful",
             text: `Your password has been reset successfully.`,
             html: `<p>Your password has been reset successfully.</p>`,
         });
-        
-        res.status(200).json({success:true, message:"Password reset successfully"});
     } catch (error) {
         console.log("error in reset password",error);
         res.status(500).json({success:false, message:error.message});
