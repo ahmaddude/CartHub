@@ -2,7 +2,7 @@ import { User } from "../models/userModel.js";
 import crypto from "crypto";
 import bcryptjs from "bcryptjs";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-import cloudinary from "cloudinary";
+import { uploadToSupabase } from "../utils/supabase.js";
 import { sendMail } from "../utils/mailer.js";
 
 export const signup=async(req,res)=>{
@@ -213,8 +213,9 @@ export const updateProfile = async(req, res) => {
 
         // Handle profile picture upload if provided
         if (profilePic) {
-            const uploadResponse = await cloudinary.uploader.upload(profilePic);
-            updateFields.profilePic = uploadResponse.secure_url;
+            const fileName = `avatar-${userId}-${Date.now()}.jpg`;
+            const uploadUrl = await uploadToSupabase(profilePic, 'avatars', fileName);
+            updateFields.profilePic = uploadUrl;
         }
 
         // Handle bio update if provided

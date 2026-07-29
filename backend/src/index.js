@@ -6,15 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
-import cloudinary from 'cloudinary';
-
 dotenv.config();
-
-cloudinary.config({
-    cloud_name: process.env.cloud_name,
-    api_key: process.env.api_key,
-    api_secret: process.env.api_secret
-});
 const __dirname = path.resolve();
 const app = express();
 const Port = process.env.PORT || 5000;
