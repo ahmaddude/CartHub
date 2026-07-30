@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOrderStore } from "../store/orderStore";
 import { useProductsStore } from "../store/productsStore";
 import { useAuthStore } from "../store/authStore";
-import { Package, ShoppingBag, TrendingUp, Clock, CheckCircle, XCircle, Store, BarChart3 } from "lucide-react";
+import { Package, ShoppingBag, TrendingUp, Store, DollarSign } from "lucide-react";
 
 const STATUSES = ["Pending", "Shipped", "Delivered", "Cancelled"];
-
-const STATUS_COLORS = {
-  Pending: { bar: "bg-yellow-400", text: "text-yellow-700", bg: "bg-yellow-50" },
-  Shipped: { bar: "bg-blue-400", text: "text-blue-700", bg: "bg-blue-50" },
-  Delivered: { bar: "bg-green-400", text: "text-green-700", bg: "bg-green-50" },
-  Cancelled: { bar: "bg-red-400", text: "text-red-700", bg: "bg-red-50" },
-};
+const STATUS_BG = { Pending: "bg-yellow-100 text-yellow-700", Shipped: "bg-blue-100 text-blue-700", Delivered: "bg-green-100 text-green-700", Cancelled: "bg-red-100 text-red-700" };
+const STATUS_TAB = { Pending: "border-yellow-400 text-yellow-700", Shipped: "border-blue-400 text-blue-700", Delivered: "border-green-400 text-green-700", Cancelled: "border-red-400 text-red-700" };
 
 const SellerDashboardPage = () => {
   const { sellerOrders, sellerStats, getSellerOrders, updateOrderStatus } = useOrderStore();
   const { allProducts, fetchProducts } = useProductsStore();
   const { user } = useAuthStore();
   const [statusUpdating, setStatusUpdating] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     getSellerOrders();
@@ -25,26 +21,23 @@ const SellerDashboardPage = () => {
   }, [getSellerOrders, fetchProducts]);
 
   const myProducts = allProducts.filter((p) => p.sellerID === user?._id || p.sellerID?._id === user?._id);
-  const totalRevenue = sellerOrders
-    .filter((o) => o.status === "Delivered")
-    .reduce((sum, o) => sum + o.totalAmount, 0);
-  const totalSales = sellerOrders.filter((o) => o.status !== "Cancelled").reduce((sum, o) => {
-    return sum + o.items
-      .filter((i) => i.product?.sellerID === user?._id || i.product?.sellerID?._id === user?._id)
-      .reduce((s, i) => s + (i.product?.price || 0) * i.quantity, 0);
-  }, 0);
 
-  const statsCards = sellerStats ? [
-    { label: "Total Products", value: sellerStats.totalProducts, icon: Package, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Total Orders", value: sellerStats.totalOrders, icon: ShoppingBag, color: "text-purple-600", bg: "bg-purple-50" },
-    { label: "Revenue", value: `$${totalRevenue.toFixed(0)}`, icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Pending", value: sellerStats.pending, icon: Clock, color: "text-yellow-600", bg: "bg-yellow-50" },
-    { label: "Shipped", value: sellerStats.shipped, icon: Package, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Delivered", value: sellerStats.delivered, icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Cancelled", value: sellerStats.cancelled, icon: XCircle, color: "text-red-600", bg: "bg-red-50" },
-  ] : [];
+  const monthlyRevenue = useMemo(() => {
+    const map = {};
+    sellerOrders.forEach((o) => {
+      if (o.status === "Delivered" || o.status === "Shipped") {
+        const key = new Date(o.createdAt).toLocaleString("default", { month: "short", year: "2-digit" });
+        map[key] = (map[key] || 0) + o.totalAmount;
+      }
+    });
+    return Object.entries(map).slice(-6);
+  }, [sellerOrders]);
 
-  const chartMax = sellerStats ? Math.max(sellerStats.pending, sellerStats.shipped, sellerStats.delivered, sellerStats.cancelled, 1) : 1;
+  const revMax = monthlyRevenue.length > 0 ? Math.max(...monthlyRevenue.map(([, v]) => v), 1) : 1;
+
+  const filteredOrders = statusFilter === "All"
+    ? sellerOrders
+    : sellerOrders.filter((o) => o.status === statusFilter);
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     setStatusUpdating(orderId);
@@ -59,73 +52,32 @@ const SellerDashboardPage = () => {
         <p className="font-['Inter'] text-[#8A8577] mt-2">Manage your products and orders</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-        {statsCards.map((s) => (
-          <div key={s.label} className="bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-5 text-center">
-            <div className={`w-10 h-10 ${s.bg} rounded-full flex items-center justify-center mx-auto mb-3`}>
-              <s.icon size={18} className={s.color} />
-            </div>
-            <p className="font-['Fraunces'] text-2xl font-medium text-[#1C1B1A]">{s.value}</p>
-            <p className="font-['Inter'] text-xs text-[#8A8577] mt-1">{s.label}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
-        <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] mb-8 flex items-center gap-2">
-          <BarChart3 size={20} className="text-[#C9A227]" /> Orders Overview
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <p className="font-['Inter'] text-sm text-[#8A8577] mb-5">Orders by Status</p>
-            <div className="space-y-4">
-              {STATUSES.map((s) => {
-                const count = sellerStats ? sellerStats[s.toLowerCase()] : 0;
-                const pct = chartMax > 0 ? (count / chartMax) * 100 : 0;
-                const c = STATUS_COLORS[s];
-                return (
-                  <div key={s}>
-                    <div className="flex justify-between font-['Inter'] text-sm mb-1.5">
-                      <span className="text-[#1C1B1A] font-medium">{s}</span>
-                      <span className="text-[#8A8577]">{count}</span>
-                    </div>
-                    <div className="w-full h-3 bg-[#FAF7F0] rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-700 ${c.bar}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div>
-            <p className="font-['Inter'] text-sm text-[#8A8577] mb-5">Status Distribution</p>
-            <div className="flex items-end justify-center gap-3 h-48">
-              {STATUSES.map((s) => {
-                const count = sellerStats ? sellerStats[s.toLowerCase()] : 0;
-                const pct = chartMax > 0 ? (count / chartMax) * 100 : 0;
-                const c = STATUS_COLORS[s];
-                return (
-                  <div key={s} className="flex flex-col items-center gap-2 flex-1">
-                    <span className="font-['Inter'] text-xs text-[#8A8577]">{count}</span>
-                    <div
-                      className={`w-full rounded-lg transition-all duration-700 ${c.bar}`}
-                      style={{ height: `${Math.max(pct, 4)}%` }}
-                    />
-                    <span className="font-['Inter'] text-xs text-[#1C1B1A] font-medium">{s}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
         <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] mb-6 flex items-center gap-2">
-          <Store size={20} className="text-[#C9A227]" /> Your Products
+          <DollarSign size={20} className="text-[#C9A227]" /> Revenue
+        </h2>
+        {monthlyRevenue.length === 0 ? (
+          <p className="font-['Inter'] text-sm text-[#8A8577] text-center py-8">No revenue data yet.</p>
+        ) : (
+          <div className="flex items-end justify-between gap-3 h-52">
+            {monthlyRevenue.map(([label, amount]) => {
+              const pct = (amount / revMax) * 100;
+              return (
+                <div key={label} className="flex flex-col items-center gap-2 flex-1">
+                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-semibold">${amount.toFixed(0)}</span>
+                  <div className="w-full rounded-lg bg-gradient-to-t from-[#C9A227] to-[#C9A227]/40 transition-all duration-700" style={{ height: `${Math.max(pct, 5)}%` }} />
+                  <span className="font-['Inter'] text-xs text-[#8A8577]">{label}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
+        <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] mb-6 flex items-center justify-between">
+          <span className="flex items-center gap-2"><Package size={20} className="text-[#C9A227]" /> Products</span>
+          <span className="font-['Inter'] text-sm text-[#8A8577] font-normal">{myProducts.length} total</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {myProducts.map((p) => (
@@ -137,19 +89,44 @@ const SellerDashboardPage = () => {
               </div>
             </div>
           ))}
-          {myProducts.length === 0 && (
-            <p className="font-['Inter'] text-sm text-[#8A8577] col-span-full text-center py-8">No products yet.</p>
-          )}
+          {myProducts.length === 0 && <p className="font-['Inter'] text-sm text-[#8A8577] col-span-full text-center py-8">No products yet.</p>}
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 overflow-hidden">
-        <div className="p-8 pb-0">
+      <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
+        <div className="flex items-center justify-between mb-6">
           <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] flex items-center gap-2">
             <ShoppingBag size={20} className="text-[#C9A227]" /> Orders
           </h2>
+          <span className="font-['Inter'] text-sm text-[#8A8577]">{sellerOrders.length} total</span>
         </div>
-        <div className="overflow-x-auto p-8 pt-4">
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          <button
+            onClick={() => setStatusFilter("All")}
+            className={`px-4 py-1.5 rounded-full font-['Inter'] text-sm font-medium transition-colors ${
+              statusFilter === "All" ? "bg-[#1C1B1A] text-[#FAF7F0]" : "bg-[#FAF7F0] text-[#8A8577] hover:text-[#1C1B1A]"
+            }`}
+          >
+            All ({sellerOrders.length})
+          </button>
+          {STATUSES.map((s) => {
+            const count = sellerStats ? sellerStats[s.toLowerCase()] : 0;
+            return (
+              <button
+                key={s}
+                onClick={() => setStatusFilter(s)}
+                className={`px-4 py-1.5 rounded-full font-['Inter'] text-sm font-medium transition-colors border ${
+                  statusFilter === s ? `${STATUS_TAB[s]} border-2` : "border-[#1C1B1A]/10 text-[#8A8577] hover:text-[#1C1B1A]"
+                }`}
+              >
+                {s} ({count})
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="overflow-x-auto">
           <table className="w-full font-['Inter'] text-sm">
             <thead>
               <tr className="border-b border-[#1C1B1A]/10">
@@ -163,10 +140,10 @@ const SellerDashboardPage = () => {
               </tr>
             </thead>
             <tbody>
-              {sellerOrders.length === 0 ? (
-                <tr><td colSpan="7" className="text-center py-10 text-[#8A8577]">No orders yet.</td></tr>
+              {filteredOrders.length === 0 ? (
+                <tr><td colSpan="7" className="text-center py-10 text-[#8A8577]">No {statusFilter === "All" ? "" : statusFilter.toLowerCase()} orders.</td></tr>
               ) : (
-                sellerOrders.map((order) => (
+                filteredOrders.map((order) => (
                   <tr key={order._id} className="border-b border-[#1C1B1A]/5 hover:bg-[#FAF7F0] transition-colors">
                     <td className="py-4 px-2 font-semibold text-[#1C1B1A]">#{order._id.slice(-6)}</td>
                     <td className="py-4 px-2 text-[#8A8577]">{order.user?.name || "N/A"}</td>
@@ -179,12 +156,7 @@ const SellerDashboardPage = () => {
                     </td>
                     <td className="py-4 px-2 font-semibold text-[#1C1B1A]">${order.totalAmount.toFixed(2)}</td>
                     <td className="py-4 px-2">
-                      <span className={`px-2.5 py-1 text-xs rounded-full font-semibold ${
-                        order.status === "Delivered" ? "bg-green-100 text-green-700" :
-                        order.status === "Shipped" ? "bg-blue-100 text-blue-700" :
-                        order.status === "Cancelled" ? "bg-red-100 text-red-700" :
-                        "bg-yellow-100 text-yellow-700"
-                      }`}>{order.status}</span>
+                      <span className={`px-2.5 py-1 text-xs rounded-full font-semibold ${STATUS_BG[order.status]}`}>{order.status}</span>
                     </td>
                     <td className="py-4 px-2 text-[#8A8577] text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td className="py-4 px-2">
@@ -194,9 +166,7 @@ const SellerDashboardPage = () => {
                         disabled={statusUpdating === order._id}
                         className="bg-[#FAF7F0] border border-[#1C1B1A]/20 rounded-lg px-2 py-1.5 text-xs font-['Inter'] text-[#1C1B1A] focus:outline-none focus:border-[#C9A227]"
                       >
-                        {STATUSES.map((s) => (
-                          <option key={s} value={s}>{s}</option>
-                        ))}
+                        {STATUSES.map((s) => (<option key={s} value={s}>{s}</option>))}
                       </select>
                     </td>
                   </tr>
