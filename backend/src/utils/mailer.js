@@ -1,31 +1,28 @@
-import nodemailer from "nodemailer";
-import dotenv from "dotenv"
-dotenv.config();
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
-
-export const sendMail = async ({ to, subject, text, html }) => {
+export const sendMail = async ({ to, subject, html }) => {
   try {
-    await transporter.sendMail({
-      from: `"Store " <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      text,
-      html,
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: "Store", email: "noreply@store.com" },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      }),
     });
-    console.log("✅ Email sent successfully");
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err);
+    }
+
+    console.log("✅ Email sent successfully via Brevo");
   } catch (err) {
-    console.error("❌ Email failed:", err);
+    console.error("❌ Email failed:", err.message);
   }
 };

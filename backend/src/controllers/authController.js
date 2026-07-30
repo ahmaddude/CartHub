@@ -38,13 +38,11 @@ export const signup=async(req,res)=>{
             },
         });
 
-        console.log("signup: About to call sendMail for", email);
         sendMail({
       to: email,
       subject: "Verify your PINTRIP account",
-      text: `Your verification code is ${verificationToken}`,
       html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
-    }).catch(err => console.error("signup: sendMail failed:", err));
+    });
 
     } catch (error) {
         res.status(400).json({success:false, message: error.message});
@@ -136,7 +134,6 @@ export const forgotPassword=async(req,res)=>{
         sendMail({
             to: user.email,
             subject: "Reset your password",
-            text: `Click this link to reset your password: ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
             html: `<p>Click this link to reset your password: <a href="${process.env.CLIENT_URL}/reset-password/${resetToken}">${process.env.CLIENT_URL}/reset-password/${resetToken}</a></p>`,
         });
     } catch (error) {
@@ -172,7 +169,6 @@ export const resetPassword=async(req,res)=>{
         sendMail({
             to: user.email,
             subject: "Password reset successful",
-            text: `Your password has been reset successfully.`,
             html: `<p>Your password has been reset successfully.</p>`,
         });
     } catch (error) {
