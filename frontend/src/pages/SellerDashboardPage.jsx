@@ -72,7 +72,7 @@ const SellerDashboardPage = () => {
               ];
               return (
                 <div key={label} className="flex flex-col items-center gap-2 flex-1 group">
-                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">${amount.toFixed(0)}</span>
+                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-semibold">${amount.toFixed(0)}</span>
                   <div className={`w-full rounded-lg bg-gradient-to-t ${colors[i % colors.length]} transition-all duration-700 shadow-sm group-hover:shadow-md`} style={{ height: `${Math.max(pct, 5)}%` }} />
                   <span className="font-['Inter'] text-xs text-[#1C1B1A] font-medium">{label}</span>
                 </div>
