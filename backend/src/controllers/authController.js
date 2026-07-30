@@ -40,7 +40,7 @@ export const signup=async(req,res)=>{
 
         sendMail({
       to: email,
-      subject: "Verify your PINTRIP account",
+      subject: "Verify your CartHub account",
       html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
     });
 
