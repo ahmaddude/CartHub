@@ -1,7 +1,14 @@
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const FROM_EMAIL = process.env.FROM_EMAIL || 'mk4249796@gmail.com';
+const FROM_NAME = 'Store';
 
 export const sendMail = async ({ to, subject, html }) => {
   try {
+    if (!BREVO_API_KEY) {
+      console.error("❌ BREVO_API_KEY is not set in environment");
+      return;
+    }
+
     const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
@@ -9,7 +16,7 @@ export const sendMail = async ({ to, subject, html }) => {
         "api-key": BREVO_API_KEY,
       },
       body: JSON.stringify({
-        sender: { name: "CartHub", email: "noreply@CartHub.com" },
+        sender: { name: FROM_NAME, email: FROM_EMAIL },
         to: [{ email: to }],
         subject,
         htmlContent: html,
@@ -18,11 +25,13 @@ export const sendMail = async ({ to, subject, html }) => {
 
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(err);
+      console.error(`❌ Brevo API error (${res.status}):`, err);
+      return;
     }
 
-    console.log("✅ Email sent successfully via Brevo");
+    const body = await res.text();
+    console.log("✅ Brevo API success:", body);
   } catch (err) {
-    console.error("❌ Email failed:", err.message);
+    console.error("❌ Email fetch failed:", err.message);
   }
 };
