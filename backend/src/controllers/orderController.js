@@ -6,8 +6,16 @@ export const createOrder=async(req,res)=>{
     const userId=req.userId;
     try {
         const cart=await Cart.findOne({user:userId}).populate("items.product");
+
         if(!cart||cart.items.length===0){
-            return res.status(400).json({message:"Cart is empty"})
+            const recent = await Order.findOne({user:userId}).sort({createdAt:-1});
+            if(recent){
+                const elapsed = Date.now() - new Date(recent.createdAt).getTime();
+                if(elapsed < 30000){
+                    return res.status(200).json({success:true,message:"Order already placed", order:recent});
+                }
+            }
+            return res.status(400).json({message:"Cart is empty"});
         }
 
         let totalAmount=0;
@@ -20,15 +28,13 @@ export const createOrder=async(req,res)=>{
             items:cart.items.map(item=>({
                 product:item.product._id,
                 quantity:item.quantity,
-                
             })),
             totalAmount,
-            
         });
         await order.save();
         await Cart.findOneAndUpdate({user:userId},{items:[]});
 
-        return res.status(201).json({success:true,message:"Order crated successfully", order})
+        return res.status(201).json({success:true,message:"Order created successfully", order})
     } catch (error) {
         return res.status(500).json({success:false,message:error.message});
     }

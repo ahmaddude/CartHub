@@ -1,13 +1,12 @@
 import Stripe from "stripe";
 import {Cart} from "../models/cartModel.js";
-import dotenv from "dotenv"
-dotenv.config()
 
 const stripe=Stripe(process.env.STRIPE_SK);
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 export const createPayment = async (req, res) => {
     try {
-      const userId = req.userId;  // Assuming you're using `verifyToken` middleware
+      const userId = req.userId;
       const cart = await Cart.findOne({ user: userId }).populate('items.product');
   
       if (!cart || cart.items.length === 0) {
@@ -15,11 +14,11 @@ export const createPayment = async (req, res) => {
       }
   
       const line_items = cart.items.map(item => {
-        const product = item.product; // Accessing the product object from the populated cart item
+        const product = item.product;
   
         if (!product || isNaN(product.price)) {
           console.error("Invalid product:", product);
-          return null; // Skip invalid items
+          return null;
         }
   
         return {
@@ -29,11 +28,11 @@ export const createPayment = async (req, res) => {
               name: product.name, 
               description: product.description || "No description available",
             },
-            unit_amount: Math.round(product.price * 100), // Convert to integer (cents)
+            unit_amount: Math.round(product.price * 100),
           },
           quantity: item.quantity,
         };
-      }).filter(item => item !== null); // Remove any invalid items
+      }).filter(item => item !== null);
   
       if (line_items.length === 0) {
         return res.status(400).json({ error: "Invalid cart items" });
@@ -43,8 +42,8 @@ export const createPayment = async (req, res) => {
         payment_method_types: ["card"],
         line_items,
         mode: "payment",
-        success_url: 'http://localhost:5173/success',
-        cancel_url: 'http://localhost:5173/cancel',
+        success_url: `${CLIENT_URL}/success`,
+        cancel_url: `${CLIENT_URL}/cancel`,
       });
   
       res.json({ url: session.url });

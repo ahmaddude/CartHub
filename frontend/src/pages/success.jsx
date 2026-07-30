@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useOrderStore } from "../store/orderStore";
 import { CheckCircle, ArrowRight } from "lucide-react";
 
 export default function Success() {
   const { createOrder } = useOrderStore();
   const [isProcessing, setIsProcessing] = useState(true);
-  const [orderComplete, setOrderComplete] = useState(false);
+  const created = useRef(false);
 
   useEffect(() => {
+    if (created.current) return;
+    created.current = true;
+
     const finalizeOrder = async () => {
       try {
         await createOrder();
-        setOrderComplete(true);
       } catch (error) {
         console.error("Error finalizing order:", error);
       } finally {
