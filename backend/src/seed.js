@@ -107,6 +107,44 @@ async function seed() {
     const createdProducts = await Product.insertMany(products);
     console.log(`Created ${createdProducts.length} products`);
 
+    const buyers = createdUsers.filter(u => u.role === "buyer");
+    const orderItems = [
+      { productIdx: 0, qty: 2, status: "Delivered", daysAgo: 120 },
+      { productIdx: 1, qty: 1, status: "Delivered", daysAgo: 90 },
+      { productIdx: 4, qty: 3, status: "Delivered", daysAgo: 60 },
+      { productIdx: 5, qty: 1, status: "Shipped", daysAgo: 30 },
+      { productIdx: 6, qty: 2, status: "Delivered", daysAgo: 45 },
+      { productIdx: 8, qty: 1, status: "Delivered", daysAgo: 20 },
+      { productIdx: 10, qty: 2, status: "Pending", daysAgo: 2 },
+      { productIdx: 13, qty: 1, status: "Shipped", daysAgo: 10 },
+      { productIdx: 14, qty: 1, status: "Delivered", daysAgo: 75 },
+      { productIdx: 15, qty: 2, status: "Cancelled", daysAgo: 5 },
+      { productIdx: 2, qty: 1, status: "Delivered", daysAgo: 150 },
+      { productIdx: 7, qty: 1, status: "Pending", daysAgo: 1 },
+      { productIdx: 11, qty: 2, status: "Shipped", daysAgo: 15 },
+      { productIdx: 3, qty: 1, status: "Delivered", daysAgo: 110 },
+      { productIdx: 9, qty: 3, status: "Delivered", daysAgo: 40 },
+    ];
+
+    const orders = orderItems.map((item) => {
+      const product = createdProducts[item.productIdx];
+      const buyer = buyers[Math.floor(Math.random() * buyers.length)];
+      const date = new Date();
+      date.setDate(date.getDate() - item.daysAgo);
+      const total = product.price * item.qty;
+      return {
+        user: buyer._id,
+        items: [{ product: product._id, quantity: item.qty }],
+        totalAmount: total,
+        status: item.status,
+        createdAt: date,
+        updatedAt: date,
+      };
+    });
+
+    await Order.insertMany(orders);
+    console.log(`Created ${orders.length} orders`);
+
     console.log("\n✅ Seed complete!");
     console.log("─── Test Accounts ───");
     console.log("All users password: password123");
