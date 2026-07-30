@@ -34,20 +34,19 @@ export const useCartStore = create((set, get) => ({
   },
 
   updateQuantity: async (productId, operation) => {
+    const item = get().cartProducts.find((p) => p.product._id === productId);
+    const newQty = operation === "increment" ? item.quantity + 1 : Math.max(1, item.quantity - 1);
+
     const cartProducts = get().cartProducts.map((p) => {
-      if (p.product._id === productId) {
-        const newQty = operation === "increment" ? p.quantity + 1 : Math.max(1, p.quantity - 1);
-        return { ...p, quantity: newQty };
-      }
+      if (p.product._id === productId) return { ...p, quantity: newQty };
       return p;
     });
     set({ cartProducts });
 
-    // Optional: sync with backend
     try {
-      await axios.post(
-        `${API_URL}/update-cart`,
-        { productId, operation },
+      await axios.put(
+        `${API_URL}/update-cart/${productId}`,
+        { quantity: newQty },
         { withCredentials: true }
       );
     } catch (err) {
@@ -59,11 +58,9 @@ export const useCartStore = create((set, get) => ({
     const cartProducts = get().cartProducts.filter((p) => p.product._id !== productId);
     set({ cartProducts });
 
-    // Optional: sync with backend
     try {
-      await axios.post(
-        `${API_URL}/remove-from-cart`,
-        { productId },
+      await axios.delete(
+        `${API_URL}/delete-item/${productId}`,
         { withCredentials: true }
       );
     } catch (err) {
