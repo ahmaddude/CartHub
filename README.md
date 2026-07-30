@@ -28,35 +28,6 @@ A full-stack e-commerce platform built with the MERN stack. Features user authen
 
 ---
 
-## Directory Structure
-
-```
-STORE/
-├── backend/
-│   ├── src/
-│   │   ├── controllers/   # Route logic
-│   │   ├── db/            # MongoDB connection
-│   │   ├── middleware/    # JWT verification
-│   │   ├── models/        # Mongoose schemas
-│   │   ├── routes/        # API routes
-│   │   ├── utils/         # Mailer, Supabase upload, JWT helpers
-│   │   ├── index.js       # Express entry point
-│   │   └── seed.js        # Database seeder
-│   ├── .env
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # navbar, productCard, Input, etc.
-│   │   ├── pages/         # All route pages
-│   │   ├── store/         # Zustand stores
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   └── package.json
-├── package.json           # Root build/start scripts
-└── .gitignore
-```
-
----
 
 ## Getting Started
 
@@ -134,23 +105,3 @@ Deployed on **Render**. Build command: `npm run build`. Start command: `npm star
 
 ---
 
-## API Routes
-
-All prefixed with `/api/auth`. Key endpoints:
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/signup` | — | Register |
-| POST | `/login` | — | Login |
-| POST | `/verify-email` | — | Verify email code |
-| POST | `/forgot-password` | — | Send reset email |
-| POST | `/reset-password/:token` | — | Reset password |
-| GET | `/check-auth` | Yes | Auth status |
-| PUT | `/update-profile` | Yes | Update profile |
-| GET | `/products` | — | List products |
-| POST | `/create-product` | Yes | Create product |
-| GET | `/view-cart` | Yes | View cart |
-| POST | `/add-to-cart` | Yes | Add to cart |
-| POST | `/create-order` | Yes | Place order |
-| POST | `/create-payment` | Yes | Stripe payment intent |
-| GET | `/categories` | — | List categories |
