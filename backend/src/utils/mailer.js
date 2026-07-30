@@ -9,7 +9,7 @@ export const sendMail = async ({ to, subject, html }) => {
         "api-key": BREVO_API_KEY,
       },
       body: JSON.stringify({
-        sender: { name: "Store", email: "noreply@store.com" },
+        sender: { name: "CartHub", email: "noreply@CartHub.com" },
         to: [{ email: to }],
         subject,
         htmlContent: html,

@@ -16,9 +16,7 @@ function StickyNavbar() {
   }, []);
 
 const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    searchProducts(value);
+    setSearchTerm(e.target.value);
   };
    const clearSearch = () => {
     setSearchTerm('');
@@ -50,14 +48,14 @@ const handleSearch = (e) => {
     <nav className="fixed top-0 z-50 w-full bg-[#FAF7F0]/90 backdrop-blur-md border-b border-[#1C1B1A]/10 px-4 py-3 lg:px-8 lg:py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <button onClick={()=>navigate('/')} className="font-['Fraunces'] text-2xl font-medium text-[#1C1B1A] tracking-tight">
-          Store
+          CartHub
         </button>
 
         <div className="hidden lg:flex items-center gap-8">
           <div className="relative flex items-center gap-2 text-[#8A8577] border border-[#1C1B1A]/20 rounded-full px-4 py-1.5 focus-within:border-[#C9A227] transition-colors">
             <Search size={16} />
             <input
-              type="search"
+              type="text"
               value={searchTerm}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
@@ -66,7 +64,7 @@ const handleSearch = (e) => {
             />
             {searchTerm && (
               <button onClick={clearSearch} className="text-[#8A8577] hover:text-[#1C1B1A] transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <X size={14} />
               </button>
             )}
           </div>
@@ -109,7 +107,7 @@ const handleSearch = (e) => {
           <div className="relative flex items-center gap-2 text-[#8A8577] border border-[#1C1B1A]/20 rounded-full px-4 py-2">
             <Search size={16} />
             <input
-              type="search"
+              type="text"
               value={searchTerm}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
@@ -118,7 +116,7 @@ const handleSearch = (e) => {
             />
             {searchTerm && (
               <button onClick={clearSearch} className="text-[#8A8577] hover:text-[#1C1B1A] transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <X size={14} />
               </button>
             )}
           </div>
