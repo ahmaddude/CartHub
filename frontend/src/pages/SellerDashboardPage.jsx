@@ -60,13 +60,21 @@ const SellerDashboardPage = () => {
           <p className="font-['Inter'] text-sm text-[#8A8577] text-center py-8">No revenue data yet.</p>
         ) : (
           <div className="flex items-end justify-between gap-3 h-52">
-            {monthlyRevenue.map(([label, amount]) => {
+            {monthlyRevenue.map(([label, amount], i) => {
               const pct = (amount / revMax) * 100;
+              const colors = [
+                "from-teal-500 to-teal-300",
+                "from-violet-500 to-violet-300",
+                "from-rose-500 to-rose-300",
+                "from-amber-500 to-amber-300",
+                "from-emerald-500 to-emerald-300",
+                "from-indigo-500 to-indigo-300",
+              ];
               return (
-                <div key={label} className="flex flex-col items-center gap-2 flex-1">
-                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-semibold">${amount.toFixed(0)}</span>
-                  <div className="w-full rounded-lg bg-gradient-to-t from-[#C9A227] to-[#C9A227]/40 transition-all duration-700" style={{ height: `${Math.max(pct, 5)}%` }} />
-                  <span className="font-['Inter'] text-xs text-[#8A8577]">{label}</span>
+                <div key={label} className="flex flex-col items-center gap-2 flex-1 group">
+                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">${amount.toFixed(0)}</span>
+                  <div className={`w-full rounded-lg bg-gradient-to-t ${colors[i % colors.length]} transition-all duration-700 shadow-sm group-hover:shadow-md`} style={{ height: `${Math.max(pct, 5)}%` }} />
+                  <span className="font-['Inter'] text-xs text-[#1C1B1A] font-medium">{label}</span>
                 </div>
               );
             })}
