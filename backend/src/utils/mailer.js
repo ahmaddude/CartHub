@@ -1,5 +1,5 @@
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL || 'mk4249796@gmail.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'abujaradahmed25@gmail.com';
 const FROM_NAME = 'Store';
 
 export const sendMail = async ({ to, subject, html }) => {
