@@ -36,7 +36,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto px-4">
       <div className="text-center mb-10">
         <h1 className="font-['Fraunces'] text-4xl font-medium text-[#1C1B1A]">Your Cart</h1>
         <p className="font-['Inter'] text-[#8A8577] mt-2">{totalCount} {totalCount === 1 ? 'item' : 'items'}</p>

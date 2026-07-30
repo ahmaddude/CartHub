@@ -19,7 +19,7 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto px-4">
       <h1 className="font-['Fraunces'] text-4xl font-medium text-[#1C1B1A] text-center mb-10">Your Orders</h1>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

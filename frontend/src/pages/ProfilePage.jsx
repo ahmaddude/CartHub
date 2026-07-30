@@ -35,7 +35,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="pb-20 md:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 w-full">
+    <div className="pb-20 md:max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 w-full">
       <div className="flex flex-col items-center space-y-6">
         <div className="relative w-40 h-40">
           <img

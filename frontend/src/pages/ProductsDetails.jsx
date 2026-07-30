@@ -37,7 +37,7 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="grid md:grid-cols-2 gap-12 max-w-6xl w-full">
+    <div className="grid md:grid-cols-2 gap-12 max-w-6xl w-full mx-auto px-4">
       <div className="flex justify-center items-center">
         <div className="relative">
           <div className="absolute -inset-3 border border-[#C9A227]/30 rounded-2xl -rotate-2" />

@@ -57,8 +57,7 @@ function App() {
   return (
   <>
   <Navbar/>
-    <div className="min-h-screen bg-[#FAF7F0] p-8
-       flex justify-center items-center pt-20 overflow-hidden"
+    <div className="min-h-screen bg-[#FAF7F0] pt-20 w-full"
      >
       
       <Routes>

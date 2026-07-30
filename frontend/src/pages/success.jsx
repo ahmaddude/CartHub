@@ -23,7 +23,7 @@ export default function Success() {
 
   if (isProcessing) {
     return (
-      <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-full">
         <div className="bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-8 max-w-md w-full text-center">
           <div className="animate-spin w-12 h-12 border-2 border-[#C9A227] border-t-[#1C1B1A] rounded-full mx-auto mb-4"></div>
           <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] mb-2">Processing your order...</h2>

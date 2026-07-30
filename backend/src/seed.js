@@ -30,26 +30,34 @@ const USERS = [
 ];
 
 const CATEGORIES = [
-  { name: "Clothing", description: "Fashion apparel and accessories", image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400" },
+  { name: "Tops", description: "T-shirts, sweaters, and button-ups", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" },
+  { name: "Outerwear", description: "Jackets, coats, and vests", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400" },
+  { name: "Bottoms", description: "Jeans, trousers, shorts, and leggings", image: "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400" },
+  { name: "Footwear", description: "Sneakers, boots, and shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
+  { name: "Dresses & Formal", description: "Dresses, blazers, and occasion wear", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400" },
 ];
 
 const PRODUCTS = [
-  { name: "Classic Cotton T-Shirt", description: "100% organic cotton crew neck tee, pre-shrunk", price: 24.99, stock: 200, category: "Clothing", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" },
-  { name: "Slim-Fit Denim Jeans", description: "Slim-fit denim jeans with stretch comfort", price: 59.99, stock: 60, category: "Clothing", image: "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400" },
-  { name: "Leather Biker Jacket", description: "Genuine leather biker jacket with quilted lining", price: 149.99, stock: 20, category: "Clothing", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400" },
-  { name: "Oversized Hoodie", description: "Heavyweight fleece hoodie with kangaroo pocket", price: 44.99, stock: 70, category: "Clothing", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400" },
-  { name: "Wool Blend Overcoat", description: "Tailored wool-blend overcoat for cold weather", price: 189.99, stock: 15, category: "Clothing", image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400" },
-  { name: "Running Sneakers", description: "Lightweight running shoes with responsive cushioning", price: 89.99, stock: 40, category: "Clothing", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
-  { name: "Chelsea Boots", description: "Suede Chelsea boots with elastic side panels", price: 119.99, stock: 25, category: "Clothing", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400" },
-  { name: "Floral Summer Dress", description: "Lightweight floral midi dress, breathable fabric", price: 54.99, stock: 35, category: "Clothing", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400" },
-  { name: "Tailored Blazer", description: "Structured single-breasted blazer for work or nights out", price: 129.99, stock: 20, category: "Clothing", image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400" },
-  { name: "Cashmere Sweater", description: "Soft cashmere crew neck sweater", price: 99.99, stock: 30, category: "Clothing", image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400" },
-  { name: "Cargo Shorts", description: "Relaxed-fit cargo shorts with multiple pockets", price: 39.99, stock: 55, category: "Clothing", image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" },
-  { name: "Silk Button-Up Shirt", description: "Lightweight silk button-up, relaxed fit", price: 69.99, stock: 30, category: "Clothing", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400" },
-  { name: "High-Waisted Leggings", description: "Squat-proof high-waisted leggings with side pockets", price: 34.99, stock: 90, category: "Clothing", image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400" },
-  { name: "Puffer Vest", description: "Packable puffer vest with recycled down fill", price: 74.99, stock: 40, category: "Clothing", image: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=400" },
-  { name: "Graphic Crewneck Sweatshirt", description: "Cotton-blend crewneck with printed graphic", price: 39.99, stock: 65, category: "Clothing", image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400" },
-  { name: "Linen Trousers", description: "Breathable linen trousers with drawstring waist", price: 49.99, stock: 45, category: "Clothing", image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400" },
+  { name: "Classic Cotton T-Shirt", description: "100% organic cotton crew neck tee, pre-shrunk", price: 24.99, stock: 200, category: "Tops", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" },
+  { name: "Cashmere Sweater", description: "Soft cashmere crew neck sweater", price: 99.99, stock: 30, category: "Tops", image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400" },
+  { name: "Silk Button-Up Shirt", description: "Lightweight silk button-up, relaxed fit", price: 69.99, stock: 30, category: "Tops", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400" },
+  { name: "Graphic Crewneck Sweatshirt", description: "Cotton-blend crewneck with printed graphic", price: 39.99, stock: 65, category: "Tops", image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400" },
+  { name: "Oversized Hoodie", description: "Heavyweight fleece hoodie with kangaroo pocket", price: 44.99, stock: 70, category: "Tops", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400" },
+
+  { name: "Leather Biker Jacket", description: "Genuine leather biker jacket with quilted lining", price: 149.99, stock: 20, category: "Outerwear", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400" },
+  { name: "Wool Blend Overcoat", description: "Tailored wool-blend overcoat for cold weather", price: 189.99, stock: 15, category: "Outerwear", image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400" },
+  { name: "Puffer Vest", description: "Packable puffer vest with recycled down fill", price: 74.99, stock: 40, category: "Outerwear", image: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=400" },
+
+  { name: "Slim-Fit Denim Jeans", description: "Slim-fit denim jeans with stretch comfort", price: 59.99, stock: 60, category: "Bottoms", image: "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400" },
+  { name: "Cargo Shorts", description: "Relaxed-fit cargo shorts with multiple pockets", price: 39.99, stock: 55, category: "Bottoms", image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" },
+  { name: "High-Waisted Leggings", description: "Squat-proof high-waisted leggings with side pockets", price: 34.99, stock: 90, category: "Bottoms", image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400" },
+  { name: "Linen Trousers", description: "Breathable linen trousers with drawstring waist", price: 49.99, stock: 45, category: "Bottoms", image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400" },
+
+  { name: "Running Sneakers", description: "Lightweight running shoes with responsive cushioning", price: 89.99, stock: 40, category: "Footwear", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
+  { name: "Chelsea Boots", description: "Suede Chelsea boots with elastic side panels", price: 119.99, stock: 25, category: "Footwear", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400" },
+
+  { name: "Floral Summer Dress", description: "Lightweight floral midi dress, breathable fabric", price: 54.99, stock: 35, category: "Dresses & Formal", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400" },
+  { name: "Tailored Blazer", description: "Structured single-breasted blazer for work or nights out", price: 129.99, stock: 20, category: "Dresses & Formal", image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400" },
 ];
 
 async function seed() {

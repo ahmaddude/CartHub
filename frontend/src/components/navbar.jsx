@@ -20,13 +20,20 @@ const handleSearch = (e) => {
     setSearchTerm(value);
     searchProducts(value);
   };
-   const handleKeyDown = (e) => {
+   const clearSearch = () => {
+    setSearchTerm('');
+  };
+
+  const doSearch = (term) => {
+    if (term !== '') {
+      searchProducts(term);
+      navigate(`/search?q=${encodeURIComponent(term)}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      const term = e.target.value.trim();
-      if (term !== '') {
-        searchProducts(term);
-        navigate('/search');
-      }
+      doSearch(e.target.value.trim());
     }
   };
   const {isAuthenticated,logout}=useAuthStore();
@@ -57,6 +64,11 @@ const handleSearch = (e) => {
               placeholder="Search products..."
               className="bg-transparent outline-none text-sm text-[#1C1B1A] placeholder:text-[#8A8577] w-48"
             />
+            {searchTerm && (
+              <button onClick={clearSearch} className="text-[#8A8577] hover:text-[#1C1B1A] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-6">
@@ -104,6 +116,11 @@ const handleSearch = (e) => {
               placeholder="Search products..."
               className="bg-transparent outline-none text-sm text-[#1C1B1A] placeholder:text-[#8A8577] w-full"
             />
+            {searchTerm && (
+              <button onClick={clearSearch} className="text-[#8A8577] hover:text-[#1C1B1A] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             {isAuthenticated && <>

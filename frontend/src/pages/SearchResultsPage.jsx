@@ -25,7 +25,7 @@ const SearchResultsPage = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full px-4">
       <p className="font-['Inter'] text-sm text-[#8A8577] mb-8">
         {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "<strong className="text-[#1C1B1A]">{query}</strong>"
       </p>

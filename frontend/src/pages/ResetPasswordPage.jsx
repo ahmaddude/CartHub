@@ -31,7 +31,7 @@ const ResetPasswordPage = () => {
         }
     }
   return (
-    <div className="max-w-md w-full bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
+    <div className="max-w-md w-full mx-auto bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
         <div className="text-center">
           <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Reset Password</h1>
           <p className="font-['Inter'] text-[#8A8577] mt-2 text-sm">Enter your new password below.</p>
@@ -56,10 +56,10 @@ const ResetPasswordPage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <button
-            className='w-full py-3 bg-[#1C1B1A] hover:bg-[#C9A227] text-[#FAF7F0] rounded-full font-['Inter'] font-semibold transition-colors duration-300'
-            type='submit'
-            disabled={isLoading}
+            <button
+              className="w-full py-3 bg-[#1C1B1A] hover:bg-[#C9A227] text-[#FAF7F0] rounded-full font-['Inter'] font-semibold transition-colors duration-300"
+              type="submit"
+              disabled={isLoading}
           >
             {isLoading ? "Resetting..." : "Set New Password"}
           </button>

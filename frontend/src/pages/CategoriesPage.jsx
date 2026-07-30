@@ -34,8 +34,12 @@ const CategoriesPage = () => {
     return category ? category.name : "All Products";
   };
 
+  const getCategoryCount = (catId) => {
+    return allProducts.filter(p => p.categoryID?._id === catId).length;
+  };
+
   return (
-    <div className="min-h-screen bg-[#FAF7F0] w-full">
+    <div className="min-h-screen bg-[#FAF7F0] w-full mx-auto">
       <div className="lg:hidden bg-white border-b border-[#1C1B1A]/10 px-4 py-3">
         <button
           onClick={() => setShowMobileCategories(!showMobileCategories)}
@@ -117,7 +121,7 @@ const CategoriesPage = () => {
                     <div>
                       <span className="font-['Inter'] font-semibold">{cat.name}</span>
                       <p className="font-['Inter'] text-sm opacity-70">
-                        {selectedCategory === cat._id ? categoryProducts.length : '...'} items
+                        {getCategoryCount(cat._id)} items
                       </p>
                     </div>
                   </div>

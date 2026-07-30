@@ -29,7 +29,7 @@ const HomePage = () => {
     <div className="pb-24 bg-[#FAF7F0] min-h-screen">
 
       {/* Best Seller Section */}
-      <section className="relative overflow-hidden bg-[#1C1B1A] mx-3 mt-3 rounded-2xl md:mx-6 md:mt-6">
+      <section className="relative overflow-hidden bg-[#1C1B1A] mx-8 mt-3 rounded-2xl md:mx-20 md:mt-6">
         {/* subtle texture */}
         <div
           className="absolute inset-0 opacity-[0.06]"
@@ -41,6 +41,15 @@ const HomePage = () => {
         />
 
         <div className="relative flex flex-col md:flex-row items-center gap-10 p-8 md:p-16">
+          {/* Decorative background elements */}
+          <div className="absolute top-6 right-6 w-72 h-72 border-2 border-[#C9A227]/20 rounded-full" />
+          <div className="absolute -bottom-32 right-10 w-[28rem] h-[28rem] border-2 border-[#C9A227]/15 rounded-full" />
+          <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-[#C9A227]/30 rounded-full" />
+          <div className="absolute bottom-16 right-1/3 w-3 h-3 bg-[#C9A227]/25 rounded-full" />
+          <div className="absolute top-24 right-[45%] w-2 h-2 bg-[#C9A227]/35 rounded-full" />
+          <div className="absolute -left-4 top-1/2 w-20 h-20 bg-[#C9A227]/10 rounded-full blur-xl" />
+          <div className="absolute right-12 top-1/3 w-32 h-32 bg-[#C9A227]/8 rounded-full blur-2xl" />
+
           {/* Image with ticket-style price tag */}
           <div className="relative shrink-0">
             <div className="absolute -inset-3 border border-[#C9A227]/30 rounded-2xl -rotate-2" />
@@ -55,7 +64,7 @@ const HomePage = () => {
           </div>
 
           {/* Copy */}
-          <div className="max-w-md">
+          <div className="max-w-md relative z-10">
             <div className="flex items-center gap-2 mb-4 text-[#C9A227]">
               <Sparkles size={16} />
               <span className="font-['Inter'] text-xs tracking-[0.25em] uppercase">
@@ -86,7 +95,7 @@ const HomePage = () => {
       </section>
 
       {/* Products */}
-      <section className="px-3 md:px-6 mt-16">
+      <section className="px-8 md:px-20 mt-32">
         <div className="flex items-end justify-between mb-8 border-b border-[#1C1B1A]/10 pb-4">
           <h2 className="font-['Fraunces'] text-3xl text-[#1C1B1A]">
             The Collection

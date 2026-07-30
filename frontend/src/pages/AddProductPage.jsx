@@ -38,7 +38,7 @@ const AddProductPage = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-8 space-y-6">
+    <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-8 space-y-6">
       <div className="text-center">
         <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Add New Product</h1>
         <p className="font-['Inter'] text-sm text-[#8A8577] mt-2">List a new item for sale</p>

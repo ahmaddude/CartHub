@@ -23,7 +23,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
+    <div className="w-full max-w-xl mx-auto bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
       <div className="text-center">
         <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Create Account</h1>
         <p className="font-['Inter'] text-[#8A8577] mt-2 text-sm">Sign up to start shopping</p>

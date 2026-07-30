@@ -55,7 +55,7 @@ const EmailVerificationPage = () => {
   }, [code]);
 
   return (
-    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
+    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
       <div className="text-center space-y-2">
         <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Verify Your Email</h1>
         <p className="font-['Inter'] text-[#8A8577] text-sm">Enter the 6-digit code sent to your email</p>
