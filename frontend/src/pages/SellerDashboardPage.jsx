@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import { useOrderStore } from "../store/orderStore";
 import { useProductsStore } from "../store/productsStore";
 import { useAuthStore } from "../store/authStore";
-import { Package, ShoppingBag, TrendingUp, Clock, CheckCircle, XCircle, Store } from "lucide-react";
+import { Package, ShoppingBag, TrendingUp, Clock, CheckCircle, XCircle, Store, BarChart3 } from "lucide-react";
 
 const STATUSES = ["Pending", "Shipped", "Delivered", "Cancelled"];
+
+const STATUS_COLORS = {
+  Pending: { bar: "bg-yellow-400", text: "text-yellow-700", bg: "bg-yellow-50" },
+  Shipped: { bar: "bg-blue-400", text: "text-blue-700", bg: "bg-blue-50" },
+  Delivered: { bar: "bg-green-400", text: "text-green-700", bg: "bg-green-50" },
+  Cancelled: { bar: "bg-red-400", text: "text-red-700", bg: "bg-red-50" },
+};
 
 const SellerDashboardPage = () => {
   const { sellerOrders, sellerStats, getSellerOrders, updateOrderStatus } = useOrderStore();
@@ -37,6 +44,8 @@ const SellerDashboardPage = () => {
     { label: "Cancelled", value: sellerStats.cancelled, icon: XCircle, color: "text-red-600", bg: "bg-red-50" },
   ] : [];
 
+  const chartMax = sellerStats ? Math.max(sellerStats.pending, sellerStats.shipped, sellerStats.delivered, sellerStats.cancelled, 1) : 1;
+
   const handleStatusUpdate = async (orderId, newStatus) => {
     setStatusUpdating(orderId);
     await updateOrderStatus(orderId, newStatus);
@@ -60,6 +69,58 @@ const SellerDashboardPage = () => {
             <p className="font-['Inter'] text-xs text-[#8A8577] mt-1">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
+        <h2 className="font-['Fraunces'] text-xl font-medium text-[#1C1B1A] mb-8 flex items-center gap-2">
+          <BarChart3 size={20} className="text-[#C9A227]" /> Orders Overview
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <p className="font-['Inter'] text-sm text-[#8A8577] mb-5">Orders by Status</p>
+            <div className="space-y-4">
+              {STATUSES.map((s) => {
+                const count = sellerStats ? sellerStats[s.toLowerCase()] : 0;
+                const pct = chartMax > 0 ? (count / chartMax) * 100 : 0;
+                const c = STATUS_COLORS[s];
+                return (
+                  <div key={s}>
+                    <div className="flex justify-between font-['Inter'] text-sm mb-1.5">
+                      <span className="text-[#1C1B1A] font-medium">{s}</span>
+                      <span className="text-[#8A8577]">{count}</span>
+                    </div>
+                    <div className="w-full h-3 bg-[#FAF7F0] rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ${c.bar}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div>
+            <p className="font-['Inter'] text-sm text-[#8A8577] mb-5">Status Distribution</p>
+            <div className="flex items-end justify-center gap-3 h-48">
+              {STATUSES.map((s) => {
+                const count = sellerStats ? sellerStats[s.toLowerCase()] : 0;
+                const pct = chartMax > 0 ? (count / chartMax) * 100 : 0;
+                const c = STATUS_COLORS[s];
+                return (
+                  <div key={s} className="flex flex-col items-center gap-2 flex-1">
+                    <span className="font-['Inter'] text-xs text-[#8A8577]">{count}</span>
+                    <div
+                      className={`w-full rounded-lg transition-all duration-700 ${c.bar}`}
+                      style={{ height: `${Math.max(pct, 4)}%` }}
+                    />
+                    <span className="font-['Inter'] text-xs text-[#1C1B1A] font-medium">{s}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-3xl shadow-lg border border-[#1C1B1A]/10 p-8">
