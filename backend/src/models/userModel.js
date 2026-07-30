@@ -30,6 +30,17 @@ const userSchema=new mongoose.Schema({
         enum:["buyer","seller"],
         default:"buyer"
     },
+    phone:{
+        type:String,
+        default:""
+    },
+    address:{
+        street: { type: String, default: "" },
+        city: { type: String, default: "" },
+        state: { type: String, default: "" },
+        zip: { type: String, default: "" },
+        country: { type: String, default: "" },
+    },
     lastLogin:{
         type:Date,
         default:Date.now

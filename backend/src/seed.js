@@ -20,9 +20,9 @@ const AVATARS = [
 ];
 
 const USERS = [
-  { name: "Alice Johnson", email: "alice@test.com", role: "seller", bio: "Premium seller with top products" },
-  { name: "Bob Smith", email: "bob@test.com", role: "seller", bio: "Quality apparel and accessories" },
-  { name: "Grace Hopper", email: "grace@test.com", role: "seller", bio: "Handmade clothing & accessories" },
+  { name: "Alice Johnson", email: "alice@test.com", role: "seller", phone: "+1-555-0101", address: { street: "123 Fashion Ave", city: "New York", state: "NY", zip: "10001", country: "US" }, bio: "Premium seller with top products" },
+  { name: "Bob Smith", email: "bob@test.com", role: "seller", phone: "+1-555-0102", address: { street: "456 Style Blvd", city: "Los Angeles", state: "CA", zip: "90001", country: "US" }, bio: "Quality apparel and accessories" },
+  { name: "Grace Hopper", email: "grace@test.com", role: "seller", phone: "+1-555-0103", address: { street: "789 Craft Ln", city: "Austin", state: "TX", zip: "73301", country: "US" }, bio: "Handmade clothing & accessories" },
   { name: "Charlie Brown", email: "charlie@test.com", role: "buyer", bio: "Avid shopper looking for deals" },
   { name: "Diana Ross", email: "diana@test.com", role: "buyer", bio: "Fashion and beauty enthusiast" },
   { name: "Eve Adams", email: "eve@test.com", role: "buyer", bio: "Always hunting for discounts" },

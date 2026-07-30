@@ -6,10 +6,14 @@ import { uploadToSupabase } from "../utils/supabase.js";
 import { sendMail } from "../utils/mailer.js";
 
 export const signup=async(req,res)=>{
-    const {email,password,name}=req.body;
+    const {email,password,name,role,phone,address}=req.body;
     try {
         if(!email||!password||!name){
             throw new Error ("all fields are required");
+        }
+        if(role==="seller"){
+            if(!phone) throw new Error("Phone number is required for sellers");
+            if(!address?.street || !address?.city || !address?.country) throw new Error("Address (street, city, country) is required for sellers");
         }
         const userAlreadyExists=await User.findOne({email});
                 if(userAlreadyExists){
@@ -22,6 +26,9 @@ export const signup=async(req,res)=>{
             email,
             name,
             password:hashedPassowrd,
+            role: role || "buyer",
+            phone: phone || "",
+            address: address || { street: "", city: "", state: "", zip: "", country: "" },
             verificationToken,
             verificationTokenExpiresAt:Date.now()+24*60*60*1000 //24 hours
         })
@@ -40,7 +47,7 @@ export const signup=async(req,res)=>{
 
         sendMail({
       to: email,
-      subject: "Verify your CartHub account",
+      subject: "Verify your PINTRIP account",
       html: `<p>Your verification code is <b>${verificationToken}</b>. It expires in 24 hours.</p>`,
     });
 
@@ -227,7 +234,7 @@ export const updateProfile = async(req, res) => {
             { new: true }
         );
 
-        res.status(200).json(updatedUser);
+        res.status(200).json({ ...updatedUser._doc, password: undefined });
         
     } catch (error) {
         console.log("error in update profile controller", error.message);
@@ -235,18 +242,4 @@ export const updateProfile = async(req, res) => {
     }
 };
 
-export const becomeASeller=async(req,res)=>{
-    const userId=req.userId
-try {
-    const user=await User.findByIdAndUpdate(userId,{role:"seller"},{new:true});
-    if(!user){
-        return res.status(400).json({success:false, message:"User not found"});
-    }
-    res.status(200).json({success:true, message:"User role updated", user:{
-        ...user._doc,
-        password:undefined
-    }});
-} catch (error) {
-    res.status(500).json({success:false, message:error.message});
-}
-}
+

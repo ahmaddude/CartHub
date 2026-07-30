@@ -1,5 +1,5 @@
 import express from 'express';
-import {becomeASeller, checkAuth, forgotPassword, login, logout, resetPassword, signup,updateProfile,verifyEmail} from '../controllers/authController.js'//auth
+import {checkAuth, forgotPassword, login, logout, resetPassword, signup,updateProfile,verifyEmail} from '../controllers/authController.js'//auth
 import { verifyToken } from '../middleware/verifyToken.js';
 import {createCategory, deleteCategory, getAllCategories, getCategoryById, updateCategory} from '../controllers/categoryController.js';//category
 import { createProduct, deleteproduct, getAllProducts, getProductById, updateProduct } from '../controllers/productController.js';//product
@@ -26,8 +26,6 @@ router.post("/reset-password/:token",resetPassword);
 router.get("/check-auth",verifyToken,checkAuth);
 
 router.put("/update-profile",verifyToken,updateProfile);
-
-router.post("/become-seller",verifyToken,becomeASeller);
 
 //end of auth routes
 //------------------------------------------------------------

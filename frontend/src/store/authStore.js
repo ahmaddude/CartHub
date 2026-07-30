@@ -23,11 +23,11 @@ verifyEmail:async(code)=>{
         throw error;
     }
 },
-signup:async(email,password,name)=>{
+signup:async(email,password,name,role,phone,address)=>{
     set({isLoading:true,error:null});
     try {
         const response=await axios.post(`${API_URL}/signup`,{
-            email,password,name
+            email,password,name,role,phone,address
         });
         set({user:response.data.user, isAuthenticated:true,isLoading:false})
     } catch (error) {
@@ -118,15 +118,6 @@ updatedProfile: async(data) => {
         };
     }
 },
-
-becomeASeller:async()=>{
-    try {
-        const res=await axios.post(`${API_URL}/become-seller`);
-        set({user:res.data.user});
-    } catch (error) {
-        console.log("error in become a seller",error);
-    }}
-
 
 }));
 
