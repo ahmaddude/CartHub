@@ -4,7 +4,7 @@ import { verifyToken } from '../middleware/verifyToken.js';
 import {createCategory, deleteCategory, getAllCategories, getCategoryById, updateCategory} from '../controllers/categoryController.js';//category
 import { createProduct, deleteproduct, getAllProducts, getProductById, updateProduct } from '../controllers/productController.js';//product
 import { addToCart, clearCart, removeFromCart, updateCart, veiwCart } from '../controllers/cartController.js';//cart
-import { createOrder, getOrders } from '../controllers/orderController.js';//order
+import { createOrder, getOrders, getSellerOrders, updateOrderStatus } from '../controllers/orderController.js';//order
 import { createPayment } from '../controllers/stripeController.js';//stripe
 
 
@@ -74,6 +74,10 @@ router.delete("/clear-cart",verifyToken,clearCart)
 router.post("/create-order",verifyToken,createOrder);
 
 router.get("/orders",verifyToken,getOrders);
+
+router.get("/seller-orders",verifyToken,getSellerOrders);
+
+router.put("/update-order-status/:orderId",verifyToken,updateOrderStatus);
 
 //end of order routes
 //-------------------------------------------------------------

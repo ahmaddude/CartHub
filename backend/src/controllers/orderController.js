@@ -13,8 +13,61 @@ export const createOrder=async(req,res)=>{
                 const elapsed = Date.now() - new Date(recent.createdAt).getTime();
                 if(elapsed < 30000){
                     return res.status(200).json({success:true,message:"Order already placed", order:recent});
-                }
-            }
+    }
+}
+
+export const getSellerOrders=async(req,res)=>{
+    const sellerId=req.userId;
+    try {
+        const sellerProducts=await Product.find({sellerID:sellerId}).select('_id name price');
+        const productIds=sellerProducts.map(p=>p._id);
+
+        const orders=await Order.find({'items.product':{$in:productIds}})
+            .populate('items.product')
+            .populate('user','name email')
+            .sort({createdAt:-1});
+
+        const stats={
+            totalProducts:sellerProducts.length,
+            totalOrders:orders.length,
+            pending:orders.filter(o=>o.status==='Pending').length,
+            shipped:orders.filter(o=>o.status==='Shipped').length,
+            delivered:orders.filter(o=>o.status==='Delivered').length,
+            cancelled:orders.filter(o=>o.status==='Cancelled').length,
+        };
+
+        return res.status(200).json({success:true,orders,stats});
+    } catch (error) {
+        return res.status(500).json({success:false,message:error.message});
+    }
+};
+
+export const updateOrderStatus=async(req,res)=>{
+    const {orderId}=req.params;
+    const {status}=req.body;
+    if(!['Pending','Shipped','Delivered','Cancelled'].includes(status)){
+        return res.status(400).json({success:false,message:"Invalid status"});
+    }
+    try {
+        const order=await Order.findById(orderId).populate('items.product');
+        if(!order){
+            return res.status(404).json({success:false,message:"Order not found"});
+        }
+
+        const hasSellerProduct=order.items.some(item=>
+            item.product && item.product.sellerID && item.product.sellerID.toString()===req.userId
+        );
+        if(!hasSellerProduct){
+            return res.status(403).json({success:false,message:"Not authorized to update this order"});
+        }
+
+        order.status=status;
+        await order.save();
+        return res.status(200).json({success:true,message:"Order status updated",order});
+    } catch (error) {
+        return res.status(500).json({success:false,message:error.message});
+    }
+};
             return res.status(400).json({message:"Cart is empty"});
         }
 

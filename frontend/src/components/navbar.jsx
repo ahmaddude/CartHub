@@ -77,9 +77,10 @@ const handleSearch = (e) => {
               <button onClick={() => navigate('/order')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Orders</button>
             </>}
             <button onClick={()=>navigate('/categories')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Categories</button>
-            {isAuthenticated && user && user.role==="seller" &&
+            {isAuthenticated && user && user.role==="seller" && <>
+              <button onClick={()=>navigate('/dashboard')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Dashboard</button>
               <button onClick={()=>navigate('/add-Product')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Add Product</button>
-            }
+            </>}
           </div>
         </div>
 
@@ -126,9 +127,10 @@ const handleSearch = (e) => {
               <button onClick={() => navigate('/order')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Orders</button>
             </>}
             <button onClick={()=>navigate('/categories')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Categories</button>
-            {isAuthenticated && user && user.role==="seller" &&
+            {isAuthenticated && user && user.role==="seller" && <>
+              <button onClick={()=>navigate('/dashboard')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Dashboard</button>
               <button onClick={()=>navigate('/add-Product')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Add Product</button>
-            }
+            </>}
           </div>
           <div className="flex gap-3 pt-2">
             {isAuthenticated ? (

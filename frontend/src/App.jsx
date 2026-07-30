@@ -19,6 +19,7 @@ import OrderPage from "./pages/OrderPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import AddProductPage from "./pages/AddProductPage";
+import SellerDashboardPage from "./pages/SellerDashboardPage";
 
 //protect routes thatrequire authentication
 const ProtectedRoute = ({children}) => {
@@ -72,6 +73,7 @@ function App() {
         <Route path="/search" element={<SearchResultsPage/>}/>
         <Route path="/categories" element={<CategoriesPage/>}/>
         <Route path="/add-Product" element={<ProtectedRoute><AddProductPage/></ProtectedRoute>}/>
+        <Route path="/dashboard" element={<ProtectedRoute><SellerDashboardPage/></ProtectedRoute>}/>
         <Route path="/product/:id" element={<ProductsDetails/>}/>
         <Route path="/cart" element={<ProtectedRoute><CartPage/></ProtectedRoute>}/>
         <Route path="/order" element={<ProtectedRoute><OrderPage/></ProtectedRoute>}/>
