@@ -11,7 +11,7 @@ const EmailVerificationPage = () => {
 
   const handleChange = (index, value) => {
     const newCode = [...code];
-    newCode[index] = value;
+    newCode[index] = value.slice(0, 1);
     setCode(newCode);
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
@@ -48,7 +48,6 @@ const EmailVerificationPage = () => {
     }
   };
 
-  // auto submit when all fields are filled
   useEffect(() => {
     if (code.every(digit => digit !== '')) {
       handleSubmit({ preventDefault: () => {} });
@@ -56,39 +55,38 @@ const EmailVerificationPage = () => {
   }, [code]);
 
   return (
-      <div className="w-full max-w-md bg-gray-900 text-white rounded-2xl shadow-xl p-10 space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Verify Your Email</h1>
-          <p className="text-gray-400">Enter the 6-digit code sent to your email address.</p>
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
+      <div className="text-center space-y-2">
+        <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Verify Your Email</h1>
+        <p className="font-['Inter'] text-[#8A8577] text-sm">Enter the 6-digit code sent to your email</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex justify-between gap-2">
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              ref={el => (inputRefs.current[index] = el)}
+              type="text"
+              maxLength={1}
+              value={digit}
+              onChange={e => handleChange(index, e.target.value)}
+              onKeyDown={e => handleKeyDown(index, e)}
+              onPaste={handlePaste}
+              className="w-12 h-12 text-center text-2xl font-['Fraunces'] bg-[#FAF7F0] text-[#1C1B1A] border-2 border-[#1C1B1A]/20 rounded-lg focus:border-[#C9A227] focus:outline-none"
+            />
+          ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex justify-between">
-            {code.map((digit, index) => (
-              <input
-                key={index}
-                ref={el => (inputRefs.current[index] = el)}
-                type="text"
-                maxLength={1}
-                value={digit}
-                onChange={e => handleChange(index, e.target.value)}
-                onKeyDown={e => handleKeyDown(index, e)}
-                onPaste={handlePaste}
-                className="w-12 h-12 text-center text-2xl font-bold bg-gray-700 text-white border-2 border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none"
-              />
-            ))}
-          </div>
-
-
-          <button
-            type="submit"
-            disabled={isLoading || code.some(digit => !digit)}
-            className="w-full py-3 bg-gray-700 hover:bg-gray-800 rounded-lg font-semibold transition"
-          >
-            {isLoading ? 'Verifying...' : 'Verify Email'}
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          disabled={isLoading || code.some(digit => !digit)}
+          className="w-full py-3 bg-[#1C1B1A] hover:bg-[#C9A227] text-[#FAF7F0] rounded-full font-['Inter'] font-semibold transition-colors duration-300"
+        >
+          {isLoading ? 'Verifying...' : 'Verify Email'}
+        </button>
+      </form>
+    </div>
   );
 };
 

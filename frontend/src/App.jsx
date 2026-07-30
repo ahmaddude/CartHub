@@ -53,14 +53,14 @@ function App() {
   useEffect(()=>{
     checkAuth()
   },[checkAuth])
-  if(isCheckingAuth)return <div className="min-h-screen  bg-gradient-to-br from-gray-400 via-blue-200 to-gray-400 flex items-center justify-center text-gray-500"><Loader className=" size-10 animate-spin "/></div>
+  if(isCheckingAuth)return <div className="min-h-screen bg-[#FAF7F0] flex items-center justify-center"><Loader className="size-10 animate-spin text-[#C9A227]"/></div>
   return (
   <>
   <Navbar/>
-    <div className="min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500 p-8 
-       flex justify-center items-center pt-20  overflow-hidden "
+    <div className="min-h-screen bg-[#FAF7F0] p-8
+       flex justify-center items-center pt-20 overflow-hidden"
      >
-     
+      
       <Routes>
         <Route path="/" element={<HomePage/>}/>
         
@@ -79,7 +79,18 @@ function App() {
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
       </Routes>
-      <Toaster/>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#1C1B1A',
+            color: '#FAF7F0',
+            borderRadius: '12px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '14px',
+          },
+        }}
+      />
     </div></>
   )
 }

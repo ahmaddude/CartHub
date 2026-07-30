@@ -20,53 +20,52 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-      <div className="w-full max-w-md bg-gray-900 text-white rounded-2xl shadow-xl p-10 space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Forgot Password</h1>
-          <p className="text-gray-400 mt-2">
-            Enter your email address and we'll send you a link to reset your password.
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-[#1C1B1A]/10 p-10 space-y-8">
+      <div className="text-center">
+        <h1 className="font-['Fraunces'] text-3xl font-medium text-[#1C1B1A]">Forgot Password</h1>
+        <p className="font-['Inter'] text-[#8A8577] mt-2 text-sm">
+          Enter your email and we'll send a reset link.
+        </p>
+      </div>
+
+      {!isSubmitted ? (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Input
+            icon={Mail}
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 bg-[#1C1B1A] hover:bg-[#C9A227] text-[#FAF7F0] rounded-full font-['Inter'] font-semibold transition-colors duration-300"
+          >
+            {isLoading ? <Loader className="animate-spin mx-auto" size={20} /> : "Send Reset Link"}
+          </button>
+        </form>
+      ) : (
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 bg-[#C9A227]/20 rounded-full flex items-center justify-center mx-auto">
+            <Mail className="h-8 w-8 text-[#C9A227]" />
+          </div>
+          <p className="font-['Inter'] text-[#8A8577] text-sm">
+            If an account exists for <strong className="text-[#1C1B1A]">{email}</strong>, you will receive a password reset link shortly.
           </p>
         </div>
+      )}
 
-        {!isSubmitted ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              icon={Mail}
-              type="email"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-gray-700 hover:bg-gray-800 rounded-lg font-semibold transition"
-            >
-              {isLoading ? <Loader className="animate-spin mx-auto" size={20} /> : "Send Reset Link"}
-            </button>
-          </form>
-        ) : (
-          <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto">
-              <Mail className="h-8 w-8 text-white" />
-            </div>
-            <p className="text-gray-300">
-              If an account exists for <strong>{email}</strong>, you will receive a password reset link shortly.
-            </p>
-          </div>
-        )}
-
-        <div className="text-center">
-          <Link
-            to="/login"
-            className="text-blue-500 hover:underline flex items-center justify-center"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" /> Back to Login
-          </Link>
-        </div>
+      <div className="text-center">
+        <Link
+          to="/login"
+          className="font-['Inter'] text-sm text-[#C9A227] hover:text-[#1C1B1A] transition-colors inline-flex items-center gap-1"
+        >
+          <ArrowLeft size={14} /> Back to Login
+        </Link>
       </div>
-    
+    </div>
   );
 };
 

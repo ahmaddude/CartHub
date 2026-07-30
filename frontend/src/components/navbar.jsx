@@ -2,40 +2,30 @@ import {useState,useEffect} from "react";
 import { useAuthStore } from '../store/authStore';
 import { useProductsStore } from '../store/productsStore'; 
 import {  useNavigate } from "react-router-dom";
-import {  Search } from 'lucide-react';
-
-import {
-  Navbar,
-  Typography,
-  Button,
-  IconButton,
-  Collapse,
-} from "@material-tailwind/react";
+import {  Search, X, Menu, ShoppingBag } from 'lucide-react';
 
 function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { searchProducts } = useProductsStore();
-    const { user } = useAuthStore();
-  
-  
+  const { user } = useAuthStore();
 
   const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
+
 const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    searchProducts(value); // call store method
+    searchProducts(value);
   };
    const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       const term = e.target.value.trim();
       if (term !== '') {
-        searchProducts(term); // filters the products in the store
-        navigate('/search'); // navigate to the search results page
-             
+        searchProducts(term);
+        navigate('/search');
       }
     }
   };
@@ -48,121 +38,99 @@ const handleSearch = (e) => {
     console.log(error)
   }
 }
-  const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {isAuthenticated && <>
-        <Typography as="li" variant="small" className="p-1 font-normal text-black">
-        <button onClick={() => navigate('/cart')} className="flex items-center">Cart</button>
-      </Typography>
-      
-      <Typography as="li" variant="small" className="p-1 font-normal text-black">
-        <button onClick={() => navigate('/order')} className="flex items-center">Orders</button>
-      </Typography>
-      </>}
-      <Typography as="li" variant="small" className="p-1 font-normal text-black">
-        <button onClick={()=>navigate('/categories')} className="flex items-center">Categories</button>
-      </Typography>
-      {isAuthenticated && user && user.role==="seller" &&
-        <Typography as="li" variant="small" className="p-1 font-normal text-black">
-        <button onClick={()=>navigate('/add-Product')} className="flex items-center">Add a product</button>
-      </Typography>
-      }
-    </ul>
-  );
-  const permissions=(isAuthenticated ?
-          
-            
-           <div className="flex items-center gap-x-1">
-            <Button onClick={() => navigate('/profile')} variant="text" size="sm" className="  text-black">
-              <span>Account</span>
-            </Button>
-            
-            <Button onClick={onLogout} variant="text" size="sm" className="  text-black">
-              <span>Log Out</span>
-            </Button>
-            </div> 
-            :
-            <div className="flex items-center gap-x-1">
-            <Button onClick={() => navigate('/login')} variant="text" size="sm" className=" text-black">
-              <span>Log In</span>
-            </Button>
-            <Button onClick={() => navigate('/signup')} variant="gradient" size="sm" className=" text-black">
-              <span>Sign Up</span>
-            </Button>
-            </div>
-  )
+
   return (
-    <div className="w-full">
-    <Navbar className="fixed top-0 z-50 w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
-      <div className="flex items-center justify-between">
-        <Typography as="button" onClick={()=>navigate('/')} className="mr-4 cursor-pointer py-1.5 font-bold text-2xl text-black">
+    <nav className="fixed top-0 z-50 w-full bg-[#FAF7F0]/90 backdrop-blur-md border-b border-[#1C1B1A]/10 px-4 py-3 lg:px-8 lg:py-4">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <button onClick={()=>navigate('/')} className="font-['Fraunces'] text-2xl font-medium text-[#1C1B1A] tracking-tight">
           Store
-        </Typography>
+        </button>
 
-        <div className="flex items-center gap-2 w-full max-w-md lg:max-w-xs relative text-black">
-          <Search className="text-black" />
-      <input
-        type="search"
-        value={searchTerm}
-        onChange={handleSearch}
-        onKeyDown={handleKeyDown}
-        placeholder="Search products..."
-        className="w-full text-black bg-transparent outline-none"
-      />
+        <div className="hidden lg:flex items-center gap-8">
+          <div className="relative flex items-center gap-2 text-[#8A8577] border border-[#1C1B1A]/20 rounded-full px-4 py-1.5 focus-within:border-[#C9A227] transition-colors">
+            <Search size={16} />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={handleSearch}
+              onKeyDown={handleKeyDown}
+              placeholder="Search products..."
+              className="bg-transparent outline-none text-sm text-[#1C1B1A] placeholder:text-[#8A8577] w-48"
+            />
+          </div>
+
+          <div className="flex items-center gap-6">
+            {isAuthenticated && <>
+              <button onClick={() => navigate('/cart')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors flex items-center gap-1.5">
+                <ShoppingBag size={16} /> Cart
+              </button>
+              <button onClick={() => navigate('/order')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Orders</button>
+            </>}
+            <button onClick={()=>navigate('/categories')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Categories</button>
+            {isAuthenticated && user && user.role==="seller" &&
+              <button onClick={()=>navigate('/add-Product')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Add Product</button>
+            }
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="mr-4 hidden lg:block">{navList}</div>
-          <div className="flex items-center ">
-          <div className="hidden lg:flex items-center gap-x-1">{permissions}</div>
-                    </div>
-          <IconButton
-            variant="text"
-            className="m-auto h-6 w-6 text-black lg:hidden"
-            ripple={false}
-            onClick={() => setOpenNav(!openNav)}
-          >
-            {openNav ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-                stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </IconButton>
+
+        <div className="hidden lg:flex items-center gap-3">
+          {isAuthenticated ? (
+            <>
+              <button onClick={() => navigate('/profile')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Account</button>
+              <button onClick={onLogout} className="font-['Inter'] text-sm bg-[#1C1B1A] text-[#FAF7F0] px-4 py-1.5 rounded-full hover:bg-[#C9A227] transition-colors">Log Out</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate('/login')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] transition-colors">Log In</button>
+              <button onClick={() => navigate('/signup')} className="font-['Inter'] text-sm bg-[#1C1B1A] text-[#FAF7F0] px-4 py-1.5 rounded-full hover:bg-[#C9A227] transition-colors">Sign Up</button>
+            </>
+          )}
         </div>
+
+        <button className="lg:hidden text-[#1C1B1A]" onClick={() => setOpenNav(!openNav)}>
+          {openNav ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
-      <Collapse open={openNav}>
-        {navList}
-        
-  {isAuthenticated ? (
-    <div className="flex justify-between lg:hidden mt-2 gap-2">
-      <Button onClick={() => navigate('/profile')} variant="text" size="sm" className="w-full text-black">
-        Account
-      </Button>
-      <Button onClick={onLogout} variant="text" size="sm" className="w-full text-black">
-        Log Out
-      </Button>
-    </div>
-  ) : (
-    <div className="flex justify-between lg:hidden mt-2 gap-2">
-      <Button onClick={() => navigate('/login')} variant="text" size="sm" className="w-full text-black">
-        Log In
-      </Button>
-      <Button onClick={() => navigate('/signup')} variant="gradient" size="sm" className="w-full">
-        Sign Up
-      </Button>
-    </div>
-  )}
 
-          
-        
-      </Collapse>
-    </Navbar>
-    </div>
+      {openNav && (
+        <div className="lg:hidden mt-4 pb-4 space-y-4 border-t border-[#1C1B1A]/10 pt-4">
+          <div className="relative flex items-center gap-2 text-[#8A8577] border border-[#1C1B1A]/20 rounded-full px-4 py-2">
+            <Search size={16} />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={handleSearch}
+              onKeyDown={handleKeyDown}
+              placeholder="Search products..."
+              className="bg-transparent outline-none text-sm text-[#1C1B1A] placeholder:text-[#8A8577] w-full"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            {isAuthenticated && <>
+              <button onClick={() => navigate('/cart')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Cart</button>
+              <button onClick={() => navigate('/order')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Orders</button>
+            </>}
+            <button onClick={()=>navigate('/categories')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Categories</button>
+            {isAuthenticated && user && user.role==="seller" &&
+              <button onClick={()=>navigate('/add-Product')} className="font-['Inter'] text-sm text-[#1C1B1A] hover:text-[#C9A227] py-1">Add Product</button>
+            }
+          </div>
+          <div className="flex gap-3 pt-2">
+            {isAuthenticated ? (
+              <>
+                <button onClick={() => navigate('/profile')} className="font-['Inter'] text-sm border border-[#1C1B1A]/20 text-[#1C1B1A] px-4 py-1.5 rounded-full">Account</button>
+                <button onClick={onLogout} className="font-['Inter'] text-sm bg-[#1C1B1A] text-[#FAF7F0] px-4 py-1.5 rounded-full">Log Out</button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => navigate('/login')} className="font-['Inter'] text-sm border border-[#1C1B1A]/20 text-[#1C1B1A] px-4 py-1.5 rounded-full">Log In</button>
+                <button onClick={() => navigate('/signup')} className="font-['Inter'] text-sm bg-[#1C1B1A] text-[#FAF7F0] px-4 py-1.5 rounded-full">Sign Up</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
   );
 }
 export default StickyNavbar
