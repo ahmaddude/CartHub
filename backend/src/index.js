@@ -11,7 +11,7 @@ const __dirname = path.resolve();
 const app = express();
 const Port = process.env.PORT || 5000;
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 // CORS configuration for development and production
