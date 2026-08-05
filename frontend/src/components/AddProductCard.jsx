@@ -18,7 +18,11 @@ const AddProductCard = () => {
     fetchCategories();
   }, [fetchCategories]);
 
-  if (!categories || categories.length === 0) return <Loader className="animate-spin text-[#C9A227]" />;
+  if (!categories || categories.length === 0) return (
+    <div className="w-full min-h-[40vh] flex items-center justify-center">
+      <Loader className="animate-spin text-[#C9A227]" />
+    </div>
+  );
 
   const handleaddP = async (e) => {
     e.preventDefault();

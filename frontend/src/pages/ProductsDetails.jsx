@@ -11,7 +11,7 @@ export default function ProductDetails() {
   const { id } = useParams();
   const { addToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
-  const { product, getProductById, deleteProduct } = useProductsStore();
+  const { product, productLoading, getProductById, deleteProduct } = useProductsStore();
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -19,8 +19,12 @@ export default function ProductDetails() {
     getProductById(id);
   }, [id, getProductById]);
 
-  if (!product) {
-    return <Loader className="size-10 animate-spin text-[#C9A227]" />;
+  if (!product || productLoading) {
+    return (
+      <div className="w-full min-h-[60vh] flex items-center justify-center">
+        <Loader className="size-10 animate-spin text-[#C9A227]" />
+      </div>
+    );
   }
 
   const handleAddToCart = async () => {

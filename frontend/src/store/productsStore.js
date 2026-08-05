@@ -8,6 +8,7 @@ export const useProductsStore = create((set) => ({
   searchResults:[],
   categoryProducts:[],
   product:null,
+  productLoading:false,
   setProducts: (products) =>
     set({ allProducts: products}),
   setProduct: (product) =>
@@ -53,12 +54,14 @@ export const useProductsStore = create((set) => ({
   },
 
   getProductById:async(id)=>{
-try {
-  const res=await axios.get(`${API_URL}/product/${id}`);
-  set({product:res.data.product})
-} catch (error) {
-  console.error(error);
-}
+    set({product:null,productLoading:true});
+    try {
+      const res=await axios.get(`${API_URL}/product/${id}`);
+      set({product:res.data.product,productLoading:false});
+    } catch (error) {
+      console.error(error);
+      set({productLoading:false});
+    }
   },
 
   createProduct: async (name, description, price, image, stock, categoryID) => {

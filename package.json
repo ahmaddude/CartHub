@@ -4,8 +4,8 @@
   "description": "",
   "main": "/backend/src/index.js",
   "scripts": {
-    "build":"npm install --prefix backend && npm install --include=dev --prefix frontend && npm run build --prefix frontend",
-    "start":"node backend/src/index.js"
+    "build": "npm install --prefix backend && npm install --include=dev --prefix frontend && npm run build --prefix frontend",
+    "start": "node backend/src/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ahmaddude/Store/issues"
   },
-  "homepage": "https://github.com/ahmaddude/Store#readme"
+  "homepage": "https://github.com/ahmaddude/Store#readme",
+  "devDependencies": {
+    "vitest": "^4.1.10"
+  }
 }

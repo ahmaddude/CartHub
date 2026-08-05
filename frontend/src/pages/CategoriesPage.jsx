@@ -16,7 +16,11 @@ const CategoriesPage = () => {
   }, [fetchProducts, fetchCategories]);
 
   if (!allProducts || allProducts.length === 0)
-    return <Loader className="animate-spin text-[#C9A227] mx-auto mt-10" />;
+    return (
+      <div className="w-full min-h-[60vh] flex items-center justify-center">
+        <Loader className="animate-spin text-[#C9A227]" />
+      </div>
+    );
 
   const displayedProducts = selectedCategory ? categoryProducts : allProducts;
 
