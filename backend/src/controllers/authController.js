@@ -6,7 +6,8 @@ import { uploadToSupabase } from "../utils/supabase.js";
 import { sendMail } from "../utils/mailer.js";
 
 export const signup=async(req,res)=>{
-    const {email,password,name,role,phone,address}=req.body;
+    const {password,name,role,phone,address}=req.body;
+    const email=(req.body.email||"").toLowerCase().trim();
     try {
         if(!email||!password||!name){
             throw new Error ("all fields are required");
@@ -92,8 +93,12 @@ export const verifyEmail=async(req,res)=>{
 };
 
 export const login=async(req,res)=>{
-    const{email,password}=req.body;
+    const {password}=req.body;
+    const email=(req.body.email||"").toLowerCase().trim();
     try {
+        if(!email||!password){
+            return res.status(400).json({success:false, message:"Email and password are required"});
+        }
         const user=await User.findOne({email})
         if(!user){
             return res.status(400).json({success:false, message:"Invalid credentials"});
@@ -127,7 +132,7 @@ export const logout=async(req,res)=>{
 };
 
 export const forgotPassword=async(req,res)=>{
-    const {email}=req.body;
+    const email=(req.body.email||"").toLowerCase().trim();
     try {
         const user=await User.findOne({email});
         if(!user){

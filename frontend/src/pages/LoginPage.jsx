@@ -19,8 +19,10 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    const formEmail = e.target.elements.email?.value ?? email;
+    const formPassword = e.target.elements.password?.value ?? password;
     try {
-      await Login(email, password);
+      await Login(formEmail, formPassword);
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid email or password");
     }
@@ -37,6 +39,8 @@ const LoginPage = () => {
         <Input
           icon={Mail}
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -44,6 +48,8 @@ const LoginPage = () => {
         <Input
           icon={Lock}
           type="password"
+          name="password"
+          autoComplete="current-password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
