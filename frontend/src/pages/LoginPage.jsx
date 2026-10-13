@@ -3,6 +3,7 @@ import { Lock, Mail, Loader, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,11 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await Login(email, password);
+    try {
+      await Login(email, password);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Invalid email or password");
+    }
   };
 
   return (
