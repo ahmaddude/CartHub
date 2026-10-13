@@ -2,7 +2,6 @@ import Stripe from "stripe";
 import {Cart} from "../models/cartModel.js";
 
 const stripe=Stripe(process.env.STRIPE_SK);
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 export const createPayment = async (req, res) => {
     try {
@@ -38,12 +37,14 @@ export const createPayment = async (req, res) => {
         return res.status(400).json({ error: "Invalid cart items" });
       }
   
+      const clientUrl = req.headers.origin || process.env.CLIENT_URL || 'http://localhost:5173';
+
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items,
         mode: "payment",
-        success_url: `${CLIENT_URL}/success`,
-        cancel_url: `${CLIENT_URL}/cancel`,
+        success_url: `${clientUrl}/success`,
+        cancel_url: `${clientUrl}/cancel`,
       });
   
       res.json({ url: session.url });
